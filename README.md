@@ -1,56 +1,85 @@
-# Welcome to your Expo app 👋
+# Glyfa Mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile app for Glyfa, built with [Expo](https://expo.dev) and React Native using [Expo Router](https://docs.expo.dev/router/introduction) for file-based navigation.
 
-## Get started
+## Requirements
 
-1. Install dependencies
+- Node.js (a version supported by the installed Expo SDK)
+- npm (the project uses `package-lock.json`)
+- Expo Go, a development build, or an iOS/Android simulator
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Getting started
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+From the dev server output, open the app in Expo Go, a development build, an Android emulator, an iOS simulator, or the browser.
 
-### Other setup steps
+## Scripts
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+| Command | What it does |
+| --- | --- |
+| `npx expo start` | Start the dev server |
+| `npx expo start -c` | Start the dev server with a cleared cache |
+| `npx expo lint` | Run ESLint |
+| `npx tsc --noEmit` | Typecheck |
+| `npx expo-doctor` | Check dependency and config issues |
+| `npx expo install --fix` | Align package versions with the current Expo SDK |
+
+Add dependencies with `npx expo install <package>` so the versions match the SDK.
+
+## Project structure
+
+```
+src/
+  app/                  Routes (every file here is a screen; _layout.tsx files define navigators)
+    _layout.tsx         Root layout
+    index.tsx           Home (currently the starter screen)
+    explore.tsx         Explore tab
+    verify/             Verification flow (see below)
+  components/           Shared components
+    verification/       Layout used by the verification screens
+  constants/            Theme colors, spacing, fonts
+  hooks/                Shared hooks (e.g. useTheme)
+assets/                 Images and icons
+```
+
+Keep non-route code (components, hooks, utilities) outside `src/app/`. Files in `src/app/` become screens, so a helper placed there becomes a route.
+
+## Verification flow
+
+The `src/app/verify/` stack covers the phone number recovery and proof review process. Each screen is a route built on `VerificationScreen`:
+
+| Route | Screen |
+| --- | --- |
+| `/verify/cant-get-code` | Can't get the code |
+| `/verify/lost-number` | Lost your number |
+| `/verify/new-number` | Your new number |
+| `/verify/add-proof` | Add your proof |
+| `/verify/under-review` | Under review |
+| `/verify/needs-one-more` | Needs one more thing |
+| `/verify/approved` | Approved, confirm number |
+| `/verify/back-in` | You are back in |
+| `/verify/decision` | How this was decided |
+| `/verify/not-approved` | Not approved |
+
+The copy is placeholder text. The flow isn't linked from the Home screen yet, so open a route directly while developing (for example `exp://<host>:<port>/--/verify/cant-get-code` in Expo Go). The proof upload is a placeholder and doesn't send anything.
+
+## Building and shipping
+
+Builds and updates use EAS:
+
+```bash
+npx eas-cli@latest build --profile development
+npx eas-cli@latest update
+```
+
+Native configuration lives in `app.json` and config plugins. Don't edit `ios/` or `android/` by hand; they're generated.
 
 ## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Expo documentation](https://docs.expo.dev/)
+- [Expo Router introduction](https://docs.expo.dev/router/introduction/)
+- [EAS Build](https://docs.expo.dev/eas/)

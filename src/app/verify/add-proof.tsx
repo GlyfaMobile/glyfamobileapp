@@ -1,42 +1,22 @@
 import { router } from 'expo-router';
-import { Pressable, StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
+import { Actions, ListRow, PrimaryButton } from '@/components/verification/parts';
 import { VerificationScreen } from '@/components/verification/verification-screen';
-import { Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
 
 export default function AddProofScreen() {
-  const theme = useTheme();
-
   return (
     <VerificationScreen
+      step={3}
+      showBack
       title="Add your proof"
-      body="A photo of an old bill, a carrier statement, or a screenshot of your account page works well."
-      primary={{ label: 'Submit for review', href: '/verify/under-review' }}
-      secondary={{ label: 'Back', onPress: () => router.back() }}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Choose proof"
-        style={({ pressed }) => [
-          styles.dropZone,
-          { borderColor: theme.textSecondary, opacity: pressed ? 0.7 : 1 },
-        ]}>
-        <ThemedText type="smallBold" themeColor="textSecondary">
-          Choose a photo or file
-        </ThemedText>
-      </Pressable>
+      subtitle="Add at least two. The more you add, the faster we can decide.">
+      <ListRow title="Photo of your ID" subtitle="NIN slip, licence or voter's card" status={{ label: 'Added', tone: 'success' }} />
+      <ListRow title="Selfie with your ID" subtitle="Hold it next to your face" status={{ label: 'Added', tone: 'success' }} />
+      <ListRow title="Your workplace" subtitle="A photo of your shop, chair or workshop" status={{ label: 'Add', tone: 'neutral' }} />
+      <ListRow title="A customer who can confirm" subtitle="We message someone you have worked for" status={{ label: 'Add', tone: 'neutral' }} />
+      <Actions>
+        <PrimaryButton label="Send for review" onPress={() => router.push('/verify/under-review')} />
+      </Actions>
     </VerificationScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  dropZone: {
-    minHeight: 140,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: Spacing.three,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

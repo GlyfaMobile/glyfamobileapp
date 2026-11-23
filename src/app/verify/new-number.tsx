@@ -1,44 +1,34 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
 
+import { Actions, Field, PrimaryButton } from '@/components/verification/parts';
 import { VerificationScreen } from '@/components/verification/verification-screen';
-import { Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
 
 export default function NewNumberScreen() {
-  const theme = useTheme();
-  const [number, setNumber] = useState('');
+  const [newNumber, setNewNumber] = useState('0803 000 0000');
 
   return (
     <VerificationScreen
+      step={2}
+      showBack
       title="Your new number"
-      body="Enter the phone number you use now. We'll ask you to prove it's yours next."
-      primary={{ label: 'Continue', href: '/verify/add-proof' }}
-      secondary={{ label: 'Back', onPress: () => router.back() }}>
-      <TextInput
-        value={number}
-        onChangeText={setNumber}
-        keyboardType="phone-pad"
-        textContentType="telephoneNumber"
-        autoComplete="tel"
-        placeholder="+1 555 000 0000"
-        placeholderTextColor={theme.textSecondary}
-        accessibilityLabel="New phone number"
-        style={[
-          styles.input,
-          { color: theme.text, backgroundColor: theme.backgroundElement },
-        ]}
+      subtitle="Once we approve, we send a code here.">
+      <Field
+        label="Old number"
+        value="0801 ••• ••78"
+        disabled
+        hint="The number you lost access to."
       />
+      <Field
+        label="New number"
+        value={newNumber}
+        onChangeText={setNewNumber}
+        keyboardType="phone-pad"
+        hint="This is a made-up number for the test."
+      />
+      <Actions>
+        <PrimaryButton label="Continue" onPress={() => router.push('/verify/add-proof')} />
+      </Actions>
     </VerificationScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    minHeight: 52,
-    borderRadius: Spacing.three,
-    paddingHorizontal: Spacing.three,
-    fontSize: 16,
-  },
-});
