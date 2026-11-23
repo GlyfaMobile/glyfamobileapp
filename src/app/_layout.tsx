@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import { VerifyProvider } from '@/components/verification/verify-state';
 import { VerifyColors } from '@/constants/verify-theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -29,9 +30,9 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <VerifyProvider>
       <AnimatedSplashOverlay />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: VerifyColors.canvas } }} />
-    </>
+    </VerifyProvider>
   );
 }

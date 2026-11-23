@@ -12,7 +12,7 @@ export function PrimaryButton({ label, onPress, disabled }: ButtonProps) {
       accessibilityState={{ disabled: !!disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [styles.primary, pressed && styles.pressed]}>
+      style={({ pressed }) => [styles.primary, disabled && styles.disabled, pressed && styles.pressed]}>
       <Text style={styles.primaryLabel}>{label}</Text>
     </Pressable>
   );
@@ -149,6 +149,9 @@ export function Actions({ children }: { children: ReactNode }) {
 const styles = StyleSheet.create({
   pressed: {
     opacity: 0.8,
+  },
+  disabled: {
+    opacity: 0.4,
   },
   actions: {
     gap: 10,
